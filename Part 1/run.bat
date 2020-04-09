@@ -1,0 +1,1 @@
+java -jar ./build/part1.jar ./data/wine-training ./data/wine-test
