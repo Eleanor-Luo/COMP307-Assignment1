@@ -8,7 +8,7 @@ public class Wine {
     private Map<Attributes, Double> attributes;
     private int wineClass = -1;
 
-    public Wine(String[] input, boolean training) {
+    public Wine(String[] input) {
         double[] attributes = Arrays.stream(input).mapToDouble(Double::parseDouble).toArray();
 
         this.attributes = new EnumMap<>(Attributes.class);
@@ -28,8 +28,7 @@ public class Wine {
         this.attributes.put(Attributes.OD280_OD315_OfDilutedWines, attributes[11]);
         this.attributes.put(Attributes.Proline, attributes[12]);
 
-        if (training)
-            wineClass = Integer.parseInt(input[13]);
+        wineClass = Integer.parseInt(input[13]);
     }
 
     public int getWineClass() {
@@ -37,10 +36,7 @@ public class Wine {
     }
 
     public double getAttribute(Attributes attribute) {
-        if (attribute == Attributes.Class)
-            return getWineClass();
-        else
-            return attributes.get(attribute);
+        return attributes.get(attribute);
     }
 
     public Double[] getAttributes() {

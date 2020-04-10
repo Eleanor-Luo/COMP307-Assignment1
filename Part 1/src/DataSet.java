@@ -16,12 +16,12 @@ public class DataSet {
         instances = new ArrayList<Wine>();
     }
 
-    public void loadSetFromFile(File file, boolean trainingSet) {
+    public void loadSetFromFile(File file) {
         String[] dataSet = readFile(file);
 
         for (int i = 1; i < dataSet.length; i++) {
             String[] attributes = dataSet[i].split("\\s");
-            Wine instance = new Wine(attributes, trainingSet);
+            Wine instance = new Wine(attributes);
 
             instances.add(instance);
         }
@@ -48,15 +48,12 @@ public class DataSet {
         return sb.toString().split("\n");
     }
 
-    // TODO: Calculate Attribute Ranges
     private void calculateAttributeRanges() {
         attributeRanges = new EnumMap<>(Attributes.class);
 
         for (Attributes attribute : Attributes.values()) {
             calculateAttributeRange(attribute);
         }
-        Log.complete("[ Dataset attribute ranges ]");
-        attributeRanges.forEach((k, v) -> Log.log(k.toString() + ": " + v));
     }
 
     private void calculateAttributeRange(Attributes attribute) {
@@ -76,5 +73,9 @@ public class DataSet {
 
     public List<Wine> getInstances() {
         return this.instances;
+    }
+
+    public double getAttributeRange(Attributes attribute) {
+        return attributeRanges.get(attribute);
     }
 }

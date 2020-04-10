@@ -1,15 +1,12 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class KNNClassifier {
     private int kValue;
     private DataSet trainingSet;
 
-    public KNNClassifier(DataSet trainingSet) {
-        this.trainingSet = trainingSet;
-    }
-
-    public Wine classify(Wine input) {
+    public int classify(Wine input) {
 
         List<Neighbour> neighbours = new ArrayList<Neighbour>();
 
@@ -22,29 +19,61 @@ public class KNNClassifier {
             return (n1.distance < n2.distance) ? -1 : (n1.distance > n2.distance) ? 1 : 0;
         });
 
-        for (Neighbour neighbour : neighbours) {
-            Log.log(neighbour.distance.toString());
+        int closestNeighboursClasses[] = new int[kValue];
+
+        for (int i = 0; i < kValue; i++) {
+            closestNeighboursClasses[i] = neighbours.get(i).instance.getWineClass();
         }
 
-        return null;
+        return mode(closestNeighboursClasses);
     }
 
-    // TODO: Implement distance function
-    public double distance(Wine wineA, Wine wineB) {
+    private double distance(Wine wineA, Wine wineB) {
         double sumOfDifferenceInAttributes = 0;
-        Double[] aAttributes = wineA.getAttributes();
-        Double[] bAttributes = wineB.getAttributes();
 
-        for (int i = 0; i < aAttributes.length; i++) {
-            double val = aAttributes[1] - aAttributes[2];
-            val = Math.sqrt(val);
+        for (Attributes attribute : Attributes.values()) {
+            double val = wineA.getAttribute(attribute) - wineB.getAttribute(attribute);
+            val *= val;
+            val /= trainingSet.getAttributeRange(attribute);
+
+            sumOfDifferenceInAttributes += val;
         }
 
-        return 1;
+        return Math.sqrt(sumOfDifferenceInAttributes);
+    }
+
+    private int mode(int[] input) {
+        HashMap<Integer, Integer> classes = new HashMap<Integer, Integer>();
+        int max = 1;
+        int mode = 0;
+
+        for (int i = 0; i < input.length; i++) {
+            if (classes.get(input[i]) != null) {
+                int count = classes.get(input[i]);
+                count++;
+                classes.put(input[i], count);
+
+                if (count > max) {
+                    max = count;
+                    mode = input[i];
+                }
+            } else {
+                classes.put(input[i], 1);
+
+                if (i == 0)
+                    mode = input[i];
+            }
+        }
+
+        return mode;
     }
 
     public void setKValue(int kValue) {
         this.kValue = kValue;
+    }
+
+    public void setTrainingSet(DataSet trainingSet) {
+        this.trainingSet = trainingSet;
     }
 
     private class Neighbour {

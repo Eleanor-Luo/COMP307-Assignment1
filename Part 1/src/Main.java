@@ -9,16 +9,32 @@ public class Main {
     private DataSet trainingSet;
     private DataSet testSet;
 
-    private DataSet outputSet;
-
     public Main(File trainingFile, File testFile) {
         testSet = new DataSet();
-        testSet.loadSetFromFile(testFile, false);
-        trainingSet = new DataSet();
-        trainingSet.loadSetFromFile(trainingFile, true);
+        testSet.loadSetFromFile(testFile);
 
-        classifier = new KNNClassifier(trainingSet);
+        trainingSet = new DataSet();
+        trainingSet.loadSetFromFile(trainingFile);
+
+        classifier = new KNNClassifier();
+        classifier.setTrainingSet(trainingSet);
         classifier.setKValue(kValue);
+
+        int correctCount = 0;
+        int wrongCount = 0;
+
+        for (Wine input : testSet.getInstances()) {
+            int wineClass = classifier.classify(input);
+
+            if (wineClass == input.getWineClass())
+                correctCount++;
+            else
+                wrongCount++;
+        }
+
+        Log.warning("Correct Count: " + correctCount + ", Wrong Count:" + wrongCount);
+
+        Log.complete("Accuracy for K=" + kValue + ": " + (double) correctCount / (double) (correctCount + wrongCount));
 
     }
 
