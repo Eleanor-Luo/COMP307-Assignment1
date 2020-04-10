@@ -32,9 +32,10 @@ public class KNNClassifier {
         double sumOfDifferenceInAttributes = 0;
 
         for (Attributes attribute : Attributes.values()) {
+            double range = trainingSet.getAttributeRange(attribute);
             double val = wineA.getAttribute(attribute) - wineB.getAttribute(attribute);
             val *= val;
-            val /= trainingSet.getAttributeRange(attribute);
+            val /= (range * range);
 
             sumOfDifferenceInAttributes += val;
         }

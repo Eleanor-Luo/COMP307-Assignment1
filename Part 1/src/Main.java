@@ -2,14 +2,11 @@ import java.io.File;
 
 public class Main {
 
-    private final int kValue = 1;
-
     private KNNClassifier classifier;
-
     private DataSet trainingSet;
     private DataSet testSet;
 
-    public Main(File trainingFile, File testFile) {
+    public Main(File trainingFile, File testFile, int... kValues) {
         testSet = new DataSet();
         testSet.loadSetFromFile(testFile);
 
@@ -18,6 +15,13 @@ public class Main {
 
         classifier = new KNNClassifier();
         classifier.setTrainingSet(trainingSet);
+
+        for (int k : kValues) {
+            KNN(k);
+        }
+    }
+
+    private void KNN(int kValue) {
         classifier.setKValue(kValue);
 
         int correctCount = 0;
@@ -32,10 +36,7 @@ public class Main {
                 wrongCount++;
         }
 
-        Log.warning("Correct Count: " + correctCount + ", Wrong Count:" + wrongCount);
-
         Log.complete("Accuracy for K=" + kValue + ": " + (double) correctCount / (double) (correctCount + wrongCount));
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -59,6 +60,6 @@ public class Main {
             return;
         }
 
-        new Main(trainingFile, testFile);
+        new Main(trainingFile, testFile, 1, 3, 6);
     }
 }
