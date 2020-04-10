@@ -1,1 +1,1 @@
-java -jar ./build/part1.jar ./data/wine-training ./data/wine-test
+java -jar ./build/Part1.jar %1 %2

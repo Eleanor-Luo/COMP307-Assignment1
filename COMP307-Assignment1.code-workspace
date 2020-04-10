@@ -9,6 +9,12 @@
 	],
 	"settings": {
 		"java.configuration.updateBuildConfiguration": "automatic",
-		"maven.view": "flat"
+		"maven.view": "flat",
+		"files.exclude": {
+			"**/.classpath": true,
+			"**/.project": true,
+			"**/.settings": true,
+			"**/.factorypath": true
+		}
 	}
 }
