@@ -1,98 +1,64 @@
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.Map;
 
 public class Wine {
 
-    // Wine Features
-    private final double alcohol;
-    private final double malicAcid;
-    private final double ash;
-    private final double alcalinityOfAsh;
-    private final double magnesium;
-    private final double totalPhenols;
-    private final double flavanoids;
-    private final double nonFlavanoidPhenols;
-    private final double proanthocyanins;
-    private final double colorIntensity;
-    private final double hue;
-    private final double OD280_OD315_ofDilutedWines;
-    private final double proline;
+    private Map<Attributes, Double> attributes;
+    private int wineClass = -1;
 
-    public Wine(String[] attributes) {
-        this.alcohol = Double.parseDouble(attributes[0]);
-        this.malicAcid = Double.parseDouble(attributes[1]);
-        this.ash = Double.parseDouble(attributes[2]);
-        this.alcalinityOfAsh = Double.parseDouble(attributes[3]);
-        this.magnesium = Double.parseDouble(attributes[4]);
-        this.totalPhenols = Double.parseDouble(attributes[5]);
-        this.flavanoids = Double.parseDouble(attributes[6]);
-        this.nonFlavanoidPhenols = Double.parseDouble(attributes[7]);
-        this.proanthocyanins = Double.parseDouble(attributes[8]);
-        this.colorIntensity = Double.parseDouble(attributes[9]);
-        this.hue = Double.parseDouble(attributes[10]);
-        this.OD280_OD315_ofDilutedWines = Double.parseDouble(attributes[11]);
-        this.proline = Double.parseDouble(attributes[12]);
+    public Wine(String[] input, boolean training) {
+        double[] attributes = Arrays.stream(input).mapToDouble(Double::parseDouble).toArray();
+
+        this.attributes = new EnumMap<>(Attributes.class);
+
+        // TODO: Clean up using enum iteration
+        this.attributes.put(Attributes.Alcohol, attributes[0]);
+        this.attributes.put(Attributes.MalicAcid, attributes[1]);
+        this.attributes.put(Attributes.Ash, attributes[2]);
+        this.attributes.put(Attributes.AlcalinityOfAsh, attributes[3]);
+        this.attributes.put(Attributes.Magnesium, attributes[4]);
+        this.attributes.put(Attributes.TotalPhenols, attributes[5]);
+        this.attributes.put(Attributes.Flavanoids, attributes[6]);
+        this.attributes.put(Attributes.NonFlavanoidPhenols, attributes[7]);
+        this.attributes.put(Attributes.Proancyanins, attributes[8]);
+        this.attributes.put(Attributes.ColorIntensity, attributes[9]);
+        this.attributes.put(Attributes.Hue, attributes[10]);
+        this.attributes.put(Attributes.OD280_OD315_OfDilutedWines, attributes[11]);
+        this.attributes.put(Attributes.Proline, attributes[12]);
+
+        if (training)
+            wineClass = Integer.parseInt(input[13]);
     }
 
-    public double getAlcohol() {
-        return this.alcohol;
+    public int getWineClass() {
+        return wineClass;
     }
 
-    public double getMalicAcid() {
-        return this.malicAcid;
+    public double getAttribute(Attributes attribute) {
+        if (attribute == Attributes.Class)
+            return getWineClass();
+        else
+            return attributes.get(attribute);
     }
 
-    public double getAsh() {
-        return this.ash;
-    }
-
-    public double getAlcalinityOfAsh() {
-        return this.alcalinityOfAsh;
-    }
-
-    public double getMagnesium() {
-        return this.magnesium;
-    }
-
-    public double getTotalPhenols() {
-        return this.totalPhenols;
-    }
-
-    public double getFlavanoids() {
-        return this.flavanoids;
-    }
-
-    public double getNonFlavanoidPhenols() {
-        return this.nonFlavanoidPhenols;
-    }
-
-    public double getProanthocyanins() {
-        return this.proanthocyanins;
-    }
-
-    public double getColorIntensity() {
-        return this.colorIntensity;
-    }
-
-    public double getHue() {
-        return this.hue;
-    }
-
-    public double getOD280_OD315_ofDilutedWines() {
-        return this.OD280_OD315_ofDilutedWines;
-    }
-
-    public double getProline() {
-        return this.proline;
+    public Double[] getAttributes() {
+        return attributes.values().toArray(new Double[13]);
     }
 
     @Override
     public String toString() {
-        return "[" + " alcohol='" + getAlcohol() + "'" + ", malicAcid='" + getMalicAcid() + "'" + ", ash='" + getAsh()
-                + "'" + ", alcalinityOfAsh='" + getAlcalinityOfAsh() + "'" + ", magnesium='" + getMagnesium() + "'"
-                + ", totalPhenols='" + getTotalPhenols() + "'" + ", flavanoids='" + getFlavanoids() + "'"
-                + ", nonFlavanoidPhenols='" + getNonFlavanoidPhenols() + "'" + ", proanthocyanins='"
-                + getProanthocyanins() + "'" + ", colorIntensity='" + getColorIntensity() + "'" + ", hue='" + getHue()
-                + "'" + ", OD280_OD315_ofDilutedWines='" + getOD280_OD315_ofDilutedWines() + "'" + ", proline='"
-                + getProline() + "'" + "]";
+        // TODO: Clean up using enum iteration
+        return "[" + " alcohol='" + getAttribute(Attributes.Alcohol) + "'" + ", malicAcid='"
+                + getAttribute(Attributes.MalicAcid) + "'" + ", ash='" + getAttribute(Attributes.Ash) + "'"
+                + ", alcalinityOfAsh='" + getAttribute(Attributes.AlcalinityOfAsh) + "'" + ", magnesium='"
+                + getAttribute(Attributes.Magnesium) + "'" + ", totalPhenols='" + getAttribute(Attributes.TotalPhenols)
+                + "'" + ", flavanoids='" + getAttribute(Attributes.Flavanoids) + "'" + ", nonFlavanoidPhenols='"
+                + getAttribute(Attributes.NonFlavanoidPhenols) + "'" + ", proanthocyanins='"
+                + getAttribute(Attributes.Proancyanins) + "'" + ", colorIntensity='"
+                + getAttribute(Attributes.ColorIntensity) + "'" + ", hue='" + getAttribute(Attributes.Hue) + "'"
+                + ", OD280_OD315_ofDilutedWines='" + getAttribute(Attributes.OD280_OD315_OfDilutedWines) + "'"
+                + ", proline='" + getAttribute(Attributes.Proline) + "'" + ", class='" + getWineClass() + "'" + "]";
     }
 }

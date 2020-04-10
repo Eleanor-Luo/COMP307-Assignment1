@@ -2,14 +2,24 @@ import java.io.File;
 
 public class Main {
 
-    public DataSet trainingSet;
-    public DataSet testSet;
+    private final int kValue = 1;
+
+    private KNNClassifier classifier;
+
+    private DataSet trainingSet;
+    private DataSet testSet;
+
+    private DataSet outputSet;
 
     public Main(File trainingFile, File testFile) {
         testSet = new DataSet();
-        testSet.loadSetFromFile(testFile);
+        testSet.loadSetFromFile(testFile, false);
+        trainingSet = new DataSet();
+        trainingSet.loadSetFromFile(trainingFile, true);
 
-        testSet.getInstances().forEach((instance) -> Log.log(instance.toString()));
+        classifier = new KNNClassifier(trainingSet);
+        classifier.setKValue(kValue);
+
     }
 
     public static void main(String[] args) throws Exception {

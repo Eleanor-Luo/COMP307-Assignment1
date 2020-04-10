@@ -3,25 +3,31 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class DataSet {
 
     private List<Wine> instances;
+    private Map<Attributes, Double> attributeRanges;
 
     public DataSet() {
         instances = new ArrayList<Wine>();
     }
 
-    public void loadSetFromFile(File file) {
+    public void loadSetFromFile(File file, boolean trainingSet) {
         String[] dataSet = readFile(file);
 
         for (int i = 1; i < dataSet.length; i++) {
-            String[] attributes = dataSet[i].split("\s");
-            Wine instance = new Wine(attributes);
+            String[] attributes = dataSet[i].split("\\s");
+            Wine instance = new Wine(attributes, trainingSet);
 
             instances.add(instance);
         }
+
+        Log.complete("Loaded Data Set " + file.getName());
+        calculateAttributeRanges();
     }
 
     public String[] readFile(File file) {
@@ -40,6 +46,32 @@ public class DataSet {
 
         // Return an array of lines (in string format) from the file
         return sb.toString().split("\n");
+    }
+
+    // TODO: Calculate Attribute Ranges
+    private void calculateAttributeRanges() {
+        attributeRanges = new EnumMap<>(Attributes.class);
+
+        for (Attributes attribute : Attributes.values()) {
+            calculateAttributeRange(attribute);
+        }
+        Log.complete("[ Dataset attribute ranges ]");
+        attributeRanges.forEach((k, v) -> Log.log(k.toString() + ": " + v));
+    }
+
+    private void calculateAttributeRange(Attributes attribute) {
+        double max = 0, min = Double.MAX_VALUE;
+
+        for (Wine wine : instances) {
+            double value = wine.getAttribute(attribute);
+
+            if (value > max)
+                max = value;
+            else if (value < min)
+                min = value;
+        }
+
+        attributeRanges.put(attribute, max - min);
     }
 
     public List<Wine> getInstances() {
