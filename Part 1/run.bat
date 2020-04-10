@@ -1,1 +1,2 @@
-java -jar ./build/Part1.jar %1 %2
+java -jar ./build/Part1.jar ./data/wine-training ./data/wine-test
+pause

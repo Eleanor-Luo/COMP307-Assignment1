@@ -7,6 +7,11 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The DataSet class represents a set of Wine instances
+ *
+ * @author Braden Roberts-Letiu
+ */
 public class DataSet {
 
     private List<Wine> instances;
@@ -16,6 +21,11 @@ public class DataSet {
         instances = new ArrayList<Wine>();
     }
 
+    /**
+     * Populates the instances list with data from the specified file
+     * 
+     * @param file file with data
+     */
     public void loadSetFromFile(File file) {
         String[] dataSet = readFile(file);
 
@@ -26,28 +36,35 @@ public class DataSet {
             instances.add(instance);
         }
 
-        Log.complete("Loaded Data Set " + file.getName());
+        Part1.print("Loaded Data Set", file.getName());
         calculateAttributeRanges();
     }
 
+    /**
+     * Parses a text file into an array of strings that represent each line in the
+     * file
+     * 
+     * @param file file to parse/read
+     * @return an array of lines
+     */
     public String[] readFile(File file) {
         StringBuilder sb = new StringBuilder();
 
-        // Read the stop file
         try (BufferedReader br = Files.newBufferedReader(file.toPath())) {
             String line;
             while ((line = br.readLine()) != null) {
-                // Append lines to string builder ending with a new line character ('\n')
                 sb.append(line).append("\n");
             }
         } catch (IOException e) {
             System.err.format("IOException: %s%n", e);
         }
 
-        // Return an array of lines (in string format) from the file
         return sb.toString().split("\n");
     }
 
+    /**
+     * Calculates the range for each instance attribute in the data
+     */
     private void calculateAttributeRanges() {
         attributeRanges = new EnumMap<>(Attributes.class);
 
@@ -56,6 +73,11 @@ public class DataSet {
         }
     }
 
+    /**
+     * Calculates the range for the specified instance attribute in the data
+     * 
+     * @param attribute attribute to find the range for
+     */
     private void calculateAttributeRange(Attributes attribute) {
         double max = 0, min = Double.MAX_VALUE;
 
@@ -71,10 +93,21 @@ public class DataSet {
         attributeRanges.put(attribute, max - min);
     }
 
+    /**
+     * Returns the instances in this data set
+     * 
+     * @return list of instances
+     */
     public List<Wine> getInstances() {
         return this.instances;
     }
 
+    /**
+     * Returns the range of an attribute in this data set
+     * 
+     * @param attribute
+     * @return range of specified attribute
+     */
     public double getAttributeRange(Attributes attribute) {
         return attributeRanges.get(attribute);
     }
