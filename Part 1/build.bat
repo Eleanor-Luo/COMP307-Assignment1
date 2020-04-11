@@ -3,7 +3,7 @@
 set build-path=./build
 set src-path=./src
 set jar-name=Part1.jar
-set main-class=Main
+set main-class=Part1
 
 @echo Building %build-path%/%jar-name%
 
