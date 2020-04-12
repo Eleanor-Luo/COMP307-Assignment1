@@ -6,14 +6,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Part 1",
+            "name": "Part 2",
             "request": "launch",
-            "mainClass": "Part1",
-            "projectName": "Part 1_3ea1fb6d",
-            "args": [
-                "./data/wine-training",
-                "./data/wine-test"
-            ]
+            "mainClass": "Part2",
+            "args": "${command:SpecifyProgramArgs}"
         }
     ]
 }
