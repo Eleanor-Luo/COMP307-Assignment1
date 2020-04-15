@@ -1,6 +1,6 @@
 PlayGolf	StayHome
 CLOUDY	RAINING	HOT	COLD	HUMID	WINDY
-StayHome	true	true	false	true	false	true
+StayHome    true	true	false	true	false	true
 StayHome	false	false	false	false	true	false
 PlayGolf	false	false	false	false	false	true
 PlayGolf	true	true	false	false	true	false

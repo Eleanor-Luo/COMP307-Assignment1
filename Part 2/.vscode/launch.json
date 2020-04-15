@@ -6,10 +6,24 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Part 2",
+            "name": "Part 2 - Golf",
             "request": "launch",
             "mainClass": "Part2",
-            "args": "${command:SpecifyProgramArgs}"
+            "args": "./data/golf-training.dat ./data/golf-test.dat"
+        },
+        {
+            "type": "java",
+            "name": "Part 2 - Hepatitis",
+            "request": "launch",
+            "mainClass": "Part2",
+            "args": "./data/hepatitis-training-run-3 ./data/hepatitis-test-run-3"
+        },
+        {
+            "type": "java",
+            "name": "Part 2 - Run x 10",
+            "request": "launch",
+            "mainClass": "Part2",
+            "args": "./data/hepatitis-training ./data/hepatitis-test true"
         }
     ]
 }
